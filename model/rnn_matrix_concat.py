@@ -46,7 +46,7 @@ class RelationModel(object):
         logits, _, _ = self.model(inputs)
         loss = self.criterion(logits, labels)
         # eigener Code
-        squared_sum = sum(sum(map(lambda x: x ** 2, self.model.adapt.weight - self.reg_matrix)))
+        squared_sum = torch.sum((self.model.adapt.weight - self.reg_matrix).pow(2))
         loss += self.weight * squared_sum
 
         # backward
@@ -210,7 +210,7 @@ class PositionAwareRNN(nn.Module):
 
         # eigener Code
         z = self.linear(final_hidden)
-        conc = torch.cat((final_hidden, z), dim=1)
+        conc = torch.cat((z, final_hidden), dim=1)
         logits = self.adapt(conc)
         return logits, final_hidden, attn_weights
     

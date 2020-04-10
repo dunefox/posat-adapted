@@ -44,7 +44,7 @@ class RelationModel(object):
         logits, _, _ = self.model(inputs)
         loss = self.criterion(logits, labels)
         # eigener Code
-        squared_sum = sum(sum(map(lambda x: x ** 2, self.model.adapt.weight - self.model.reg_matrix)))
+        squared_sum = torch.sum((self.model.adapt.weight - self.reg_matrix).pow(2))
         loss += self.weight * squared_sum
         
         # backward

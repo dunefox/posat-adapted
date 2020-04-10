@@ -262,15 +262,15 @@ elif opt['erw2']:
             
         print(name, param.requires_grad)
 
-    model.model.state_dict["adapt.weight"].copy_(
-        torch.nn.Parameter(
-            torch.cat(
-                (model.model.state_dict["attn_layer.ulinear.weight"],
-                 torch.zeros(42, 42)),
-                dim=1
-            )
-        )
-    )
+    # model.model.state_dict["adapt.weight"].copy_(
+    #     torch.nn.Parameter(
+    #         torch.cat(
+    #             (model.model.state_dict["attn_layer.ulinear.weight"],
+    #              torch.zeros(42, 42)),
+    #             dim=1
+    #         )
+    #     )
+    # )
 
     print("adapted model:\n", model.model)
 else:
