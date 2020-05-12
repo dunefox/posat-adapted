@@ -7,7 +7,7 @@ for i in 1:2
                   #SBATCH --output=results/erw$(i)_train_$(weight).out
                   #SBATCH --job-name="erw$(i)_train_$(weight)"
 
-                  /home/f/fuchsp/.pyenv/shims/python train_finetune.py --data_dir /big/f/fuchsp/data/datasets/train_tr --vocab_dir dataset/vocab --model_dir results/saved_models/clean_ds_train --erw$(i) True --weight $(weight) --id erw$(i)_train_$(weight) --info "Position-aware attention model"
+                  /home/f/fuchsp/.pyenv/shims/python ../train_finetune.py --data_dir /big/f/fuchsp/data/datasets/train_tr --vocab_dir ../dataset/vocab --model_dir saved_models/clean_ds --erw$(i) True --weight $(weight) --id erw$(i)_train_$(weight) --info "Position-aware attention model"
 
                   """)
         end

@@ -23,6 +23,8 @@ class RelationModel(object):
             self.model.cuda()
             self.criterion.cuda()
         self.optimizer = torch_utils.get_optimizer(opt['optim'], self.parameters, opt['lr'])
+        # eigener Code
+        self.reg_matrix = torch.eye(42).cuda()
 
     def print_model(self):
         # eigener Code
@@ -44,7 +46,7 @@ class RelationModel(object):
         logits, _, _ = self.model(inputs)
         loss = self.criterion(logits, labels)
         # eigener Code
-        squared_sum = torch.sum((self.model.adapt.weight - self.reg_matrix).pow(2))
+        squared_sum = torch.sum(torch.sub(self.model.adapt.weight, self.reg_matrix).pow(2))
         loss += self.weight * squared_sum
         
         # backward
@@ -124,7 +126,6 @@ class PositionAwareRNN(nn.Module):
         # Neue Schicht z mit |W'| = 42 x 42
         # Eingabe: Ausgaben von z (ursprüngliche Ausgabeschicht)
         self.adapt = nn.Linear(opt['num_class'], opt['num_class'])
-        self.reg_matrix = torch.eye(42).cuda()
 
         if opt['attn']:
             self.attn_layer = layers.PositionAwareAttention(opt['hidden_dim'],
