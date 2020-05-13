@@ -48,7 +48,8 @@ class RelationModel(object):
         loss = self.criterion(logits, labels)
         # eigener Code
         squared_sum = torch.sum(torch.sub(self.model.adapt.weight, self.reg_matrix).pow(2))
-        loss += Variable(torch.tensor(self.weight * squared_sum))
+        # loss += Variable(torch.tensor(self.weight * squared_sum)) # , requires_grad=True)
+        loss = torch.add(loss, torch.mul(self.weight, squared_sum))
         
         # backward
         loss.backward()

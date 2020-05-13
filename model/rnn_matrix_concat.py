@@ -7,6 +7,7 @@ import torch
 from torch import nn
 from torch.nn import init
 import torch.nn.functional as F
+from torch.autograd import Variable
 
 from utils import constant, torch_utils
 from model import layers
@@ -48,7 +49,8 @@ class RelationModel(object):
         # eigener Code
         #  squared_sum = torch.sum((self.model.adapt.weight - self.reg_matrix).pow(2))
         squared_sum = torch.sum(torch.sub(self.model.adapt.weight, self.reg_matrix).pow(2))
-        loss += self.weight * squared_sum
+        #  loss = torch.add(loss, torch.tensor(torch.mul(torch.tensor(self.weight), squared_sum))) # , requires_grad=True)
+        loss = torch.add(loss, torch.mul(self.weight, squared_sum))
 
         # backward
         loss.backward()
